@@ -73,6 +73,11 @@ class loginTest:
                           'AppClassID': loads(response.text)['data'][0]['AppClassID']}
             response = post(url=self.url_appTwo, headers=self.headers, data=appon_data)
             logging.info(response.text)
+            # appon_data = {"userID": self.userID,
+            #               "sid": self.sid,
+            #               'AppClassID': 1754}
+            # response = post(url=self.url_appTwo, headers=self.headers, data=appon_data)
+            # logging.info(response.text)
 
 
             #最小分类
@@ -81,6 +86,11 @@ class loginTest:
                           'AppClassID': loads(response.text)['data'][0]['AppClassID']}
             response = post(url=self.url_appThree, headers=self.headers, data=appon_data)
             logging.info(response.text)
+                # appon_data = {"userID": self.userID,
+                #               "sid": self.sid,
+                #               'AppClassID': 6116}
+                # response = post(url=self.url_appThree, headers=self.headers, data=appon_data)
+                # logging.info(response.text)
 
 
             #学科最小分类下的习题分类
@@ -91,8 +101,7 @@ class loginTest:
             logging.info(response.text)
 
 
-            logging.info('````````````````'+loads(response.text)['data'][0]['Child'][0]['Child'][0]['AppID'])
-            logging.info('````````````````' + loads(response.text)['data'][0]['Child'][0]['Child'][0]['ExamCptID'])
+
             # #具体考题
             # 强化练习     response.text)['data'][0]
             #     |
@@ -106,6 +115,14 @@ class loginTest:
             logging.info(appon_data)
             response = post(url=self.url_examList, headers=self.headers, data=appon_data)
             logging.info(response.text)
+
+            # appon_data = {"userID": self.userID,
+            #               "sid": self.sid,
+            #               "AppID": 'b2215065-bc4b-11e6-b1a9-00163e0157d1',
+            #               "ExamCptID": '53e33011-991b-4285-bcc7-8b9482579610'}
+            # logging.info(appon_data)
+            # response = post(url=self.url_examList, headers=self.headers, data=appon_data)
+            # logging.info(response.text)
 
     def run(self):
         self.login()
