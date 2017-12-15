@@ -1,0 +1,26 @@
+
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<title>crypto</title>
+</head>
+
+<script src="./CryptoJS/rollups/sha256.js"></script> 
+<script src="./CryptoJS/components/enc-utf16-min.js"></script>
+<script src="./CryptoJS/rollups/tripledes.js"></script>
+<script> 
+
+ var keyHex = CryptoJS.enc.Utf8.parse("5QTtRO3vQMaYnPajQqc4d7eaF6BNS2dG");
+ var ivHex = CryptoJS.enc.Utf8.parse("5QTtRO3vQMaYnPajQqc4d7eaF6BNS2dG");
+ var decrypted = CryptoJS.DES.decrypt({
+            ciphertext: CryptoJS.enc.Hex.parse("efd054ec56260109b59aa678af4397630f053bfdb15e580b4ae9cb51e9455493a7ef24c0ab7e72b8ffa9481e3b6569e795229c2283e3f3cd")
+        }, keyHex, {
+            iv:ivHex,
+            mode: CryptoJS.mode.CBC,
+            padding: CryptoJS.pad.Pkcs7
+        });
+	alert(decrypted.toString(CryptoJS.enc.Utf8));
+	</script>
+<body>
+
+</body>
+</html>
