@@ -1,7 +1,14 @@
 from requests import request, post
-from json import loads
+from json import loads,dumps
 import logging
+from  pymongo import  MongoClient
+import time
+
 logging.basicConfig(level=logging.DEBUG)
+client = MongoClient('localhost',27017)
+db = client.ksbao
+ksbao_test = db.ksbao_test8
+# ksbao_testInfo = db.ksbao_testInfo
 
 
 class loginTest:
@@ -14,10 +21,21 @@ class loginTest:
         self.userID = ''
         self.appENama = ''
         self.url_logoin = 'http://gfapi.ksbao.com/api/user/userlogin'
-        self.url_verifyCode = 'http://gfapi.ksbao.com/api/app/appVersionInfo?appENames=ZYYS_JSQKYX&appVer=0&agentCode=889&clientver=wide.ksbao.com'
-        self.url_vipinfo = 'http://gfapi.ksbao.com/api/user/vipinfo?appEName=ZYYS_JSQKYX&guid=DEmXrR5TXeBgpJgzT1NN1RHLtEaYjwby3234143&appVn=1&clientver=wide.ksbao.com'
+        # self.url_verifyCode = 'http://gfapi.ksbao.com/api/app/appVersionInfo?appENames=ZYYS_JSQKYX&appVer=0&agentCode=889&clientver=wide.ksbao.com'
+        # self.url_vipinfo = 'http://gfapi.ksbao.com/api/user/vipinfo?appEName=ZYYS_JSQKYX&guid=DEmXrR5TXeBgpJgzT1NN1RHLtEaYjwby3234143&appVn=1&clientver=wide.ksbao.com'
+        #获取agent信息 886
+        # self.agentinfo = 'http://gfapi.ksbao.com/api/agentInfo/getAgentInfo?AgentUrl=wide.ksbao.com&clientver=wide.ksbao.com'
+        #获取菜单  appEName从数据看直接获取
+        self.chapterMenuX = 'http://gfapi.ksbao.com/api/chapterMenu/getChapterMenuX?appEName=ZYYS_NK&clientver=wide.ksbao.com'
         self.url_chapterTestEx ='http://gfapi.ksbao.com/api/exam/getChapterTestEx'
         self.guidCode = ''
+        self.appID = '751'
+        self.cptID = ''
+        self.agentCode = 886
+        self.login_appID = ''
+        self.login_appEName = ''
+
+
         # self.url_appone = 'http://114.55.128.51:7051/appManage/appOne'
         # self.url_appTwo = 'http://114.55.128.51:7051/appManage/appTwo'
         # self.url_appThree = 'http://114.55.128.51:7051/appManage/appThree'
@@ -38,6 +56,11 @@ class loginTest:
 
 
     def login(self):
+
+
+
+
+        #登录
         logging.info('login ....')
 
         data = {"username":self.usr,
@@ -45,22 +68,120 @@ class loginTest:
         response = post(url=self.url_logoin, data=data)
 
         result = loads(response.text)
-        logging.info(result)
+        # logging.info(result)
         if result['msg'] == '登陆成功.':
             self.guid = result['data']['guid']
             self.userID = result['data']['userID']
             self.appENama = result['data']['appEName']
 
-            TestEx_data = {"appID":1334,
-                           "cptID":1,
-                           "queryHistory":1,
-                           "queryTestInfo":1,
-                           "queryKnowledge":1,
-                           "guid":self.guid,
-                           "agentCode":888,
-                           "clientver":"wide.ksbao.com"}
-            response = post(url=self.url_chapterTestEx, headers=self.headers, data=TestEx_data)
-            logging.info(response.text)
+
+            # logging.info(loads(response.text))
+            # logging.info(self.guidCode)
+
+            response = request(method='get', url=self.chapterMenuX, headers=self.headers)
+
+            menuInfo = loads(response.text)
+            menuInfo2 = loads(menuInfo['data']['ChapterMenuJson'])
+
+            for menu_level2 in menuInfo2['Childs']:
+                # INFO: root:1
+                # INFO: root:2
+                # INFO: root:3
+                # INFO: root:4
+                # INFO: root:5
+                # INFO: root:6
+                # INFO: root:7
+                # INFO: root:8
+                # INFO: root:10
+                # INFO: root:11
+                # INFO: root:13
+                # INFO: root:14
+                # INFO: root:16
+                for menu_level3 in menu_level2['Childs']:
+
+                        for  testEx_item in menuInfo2['Childs'][0]['Childs'][0]['Childs']:
+                            arr_testEx_items = []
+                            #考题
+
+                            TestEx_data = {"appID":self.appID,
+                                           "cptID":testEx_item['ID'],
+                                           "queryHistory":1,
+                                           "queryTestInfo":1,
+                                           "queryKnowledge":1,
+                                           "guid":self.guid,
+                                           "agentCode":self.agentCode,
+                                           "clientver":"wide.ksbao.com"}
+                            logging.info(TestEx_data)
+                            response = post(url=self.url_chapterTestEx, headers=self.headers, data=TestEx_data)
+
+                            testEx_info = loads(response.text)
+
+                            # logging.info(testEx_info)
+
+                            for testEx_items in testEx_info['data']['test']['StyleItems']:
+                                for testEx_item in testEx_items['TestItems']:
+                                    arr_testEx_items.append(testEx_item)
+                                    # logging.info(testEx_item)
+                            ksbao_test.insert_many(arr_testEx_items)
+                        logging.warning("休息2分钟继续抓......")
+                        time.sleep(120)
+
+
+
+
+
+
+
+                        # for testEx_item in testEx_info['data']['test']['StyleItems'][0]['TestItems']:
+                        # testEx_items.append(testEx_info['data']['test']['StyleItems'][0]['TestItems'][0])
+                        #     logging.info(testEx_item)
+
+
+            # logging.info(menuInfo)
+            # logging.info(menuInfo['data'])
+            # logging.info(menuInfo['data']['ChapterMenuJson'])
+            # 章节练习下列表
+            # logging.info(loads(menuInfo['data']['ChapterMenuJson']))
+            # 最小分类 习题集 or 公共科目 的下级
+            # logging.info(menuInfo2['Childs'][0])
+            # 试卷列表
+            # logging.info(menuInfo2['Childs'][0]['Childs'][0])
+
+            #
+            # #考题ID
+            # logging.info(menuInfo2['Childs'][0]['Childs'][0]['Childs'][0])
+
+            # testEx_items = []
+
+            # for  testEx_item in menuInfo2['Childs'][0]['Childs'][0]['Childs']:
+            #     #考题
+            #     TestEx_data = {"appID":self.appID,
+            #                    "cptID":testEx_item['ID'],
+            #                    "queryHistory":1,
+            #                    "queryTestInfo":1,
+            #                    "queryKnowledge":1,
+            #                    "guid":self.guid,
+            #                    "agentCode":self.agentCode,
+            #                    "clientver":"wide.ksbao.com"}
+            #     response = post(url=self.url_chapterTestEx, headers=self.headers, data=TestEx_data)
+            #     testEx_info = loads(response.text)
+            #     for testEx_item in testEx_info['data']['test']['StyleItems'][0]['TestItems']:
+            #     testEx_items.append(testEx_info['data']['test']['StyleItems'][0]['TestItems'][0])
+            #
+            # ksbao_test.insert_many(testEx_items)
+
+
+                # logging.info(testEx_info)
+                # logging.info(testEx_info['data']['test']['StyleItems'][0]['TestItems'][0])
+
+                # ksbao_test = loads(testEx_info['data']['test']['StyleItems'][0]['TestItems'][0])
+                # for testEx_item in testEx_info['data']['test']['StyleItems'][0]['TestItems']:
+                    # testEx_items.append(testEx_info['data']['test']['StyleItems'][0]['TestItems'][0])
+                #     logging.info(testEx_item)
+                #
+                    # logging.info(testEx_item['Title'])
+
+
 
             # verifyCode_data = {"sid":self.userID,
             #                    "userID":self.userID}
