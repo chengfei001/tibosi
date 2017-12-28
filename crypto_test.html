@@ -1,0 +1,32 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>Title</title>
+</head>
+
+
+
+<script src="./CryptoJS/rollups/tripledes.js"></script>
+<script>
+//    var keyHex = CryptoJS.enc.Utf8.parse('abcd12342ddd');
+//
+//    var ivHex = CryptoJS.enc.Utf8.parse('inputvecddd');
+//    var encrypted = CryptoJS.DES.encrypt('Message', keyHex, { iv: ivHex });
+////    alert(encrypted)
+
+    var keyHex = CryptoJS.enc.Utf8.parse("5QTtRO3v");
+    alert(keyHex)
+    var ivHex = CryptoJS.enc.Utf8.parse("5QTtRO3v");
+//    alert(keyHex)
+    message = "90c907746fca3d269afeb7a5a2e5e871807864be683969263bbaf92a23ad025afb5f80ee4aa6c43bbe2e3a35bd4af029bff9f78e06b335853e9e26d9d0842708f44e8f69f75b2b89716b3ce262858b14"
+//    var decrypted = CryptoJS.DES.decrypt("90c907746fca3d269afeb7a5a2e5e871807864be683969263bbaf92a23ad025afb5f80ee4aa6c43bbe2e3a35bd4af029bff9f78e06b335853e9e26d9d0842708f44e8f69f75b2b89716b3ce262858b14", keyHex, {iv: ivHex, mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7});
+    var decrypted = CryptoJS.DES.decrypt({ciphertext: CryptoJS.enc.Hex.parse(message)}, keyHex, {iv: ivHex, mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7});
+    alert(decrypted.toString(CryptoJS.enc.Utf8));
+    alert(decrypted);               
+
+</script>
+<body>
+
+</body>
+</html>
