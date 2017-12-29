@@ -1,4 +1,4 @@
- from requests import request, post
+from requests import request, post
 from json import loads
 import logging
 logging.basicConfig(level=logging.DEBUG)
