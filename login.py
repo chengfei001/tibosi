@@ -39,8 +39,9 @@ class userLogin:
         if result['msg'] == '登陆成功.':
             self.guid = result['data']['guid']
             self.userID = result['data']['userID']
-            self.appENama = result['data']['appEName']
-        logging.info(result['msg'])
+            self.appEName = result['data']['appEName']
+
+        logging.info(result['msg']+response.text)
 
     def run(self):
         self.login()

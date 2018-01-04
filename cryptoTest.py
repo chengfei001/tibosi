@@ -1,10 +1,10 @@
 # coding: utf8
-import sys
+# import sys
 # from binascii import b2a_hex, a2b_hex
 
 from Crypto.Cipher import DES
 from binascii import b2a_hex, a2b_hex
-import base64
+# import base64
 
 
 """
