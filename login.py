@@ -46,7 +46,7 @@ class userLogin:
     def run(self):
         self.login()
 
-# if __name__ == '__main__':
-#     user  = userLogin()
-#     user.run()
-#
+if __name__ == '__main__':
+    user  = userLogin()
+    user.run()
+
