@@ -3,13 +3,15 @@ from pymongo import MongoClient
 from json import loads, dumps
 import time
 import logging
+import random
+import time
 
 from login import userLogin
 import CryptoDesUtil
 
-logging.basicConfig(level = logging.INFO)
+logging.basicConfig(level=logging.INFO)
 
-#mongoDB
+# mongoDB
 client = MongoClient(host='localhost', port=27017)
 db = client.kaoshibaodian_base
 # db2 = client.kaoshibaodian_base1
@@ -17,40 +19,60 @@ db_questionItem = db.QuestionItem
 db_questionAnswer = db.QuestionAnswer
 db_PoolItem = db.PoolItem
 
-#要抓取的科室
-appENames = {'ZYYS_NK'}
+# 曹惠子账号 13811378722 ，通用版-麻醉科，通用版-精神科，通用版-儿外科，通用版-急诊科
+# appENames = '["ZYYS_MZK","ZYYS_JSK","ZYYS_EWK","ZYYS_JZK"]'
+appENames = '["ZYYS_MZK","ZYYS_JZK","ZYYS_JSK"]'
+
+
+# # 要抓取的科室 何燕账号 1506
+# # appENames = {'ZYYS_WK'}#{'ZYYS_NK', 'ZYYS_WK', 'ZYYS_EK', 'ZYYS_FCK'}
+# appENames = '["ZYYS_NK", "ZYYS_WK", "ZYYS_EK", "ZYYS_FCK"]'
 
 class QuestionItem:
     def __init__(self):
-        #确认课程抓取时AppID需要从数据库中获取
-        self.appID = '751'
+        # 确认课程抓取时AppID需要从数据库中获取
+
         self.agentCode = 886
         # self.guid = ''
         self.url_chapterTestEx = 'http://gfapi.ksbao.com/api/exam/getChapterTestEx'
         self.chapterMenuX = 'http://gfapi.ksbao.com/api/chapterMenu/getChapterMenuX?clientver=wide.ksbao.com&appEName=%s'
+        self.appVersion = 'http://gfapi.ksbao.com/api/app/appVersionInfo?appENames=%s&guid=%s&agentCode=889&clientver=wide.ksbao.com'
         self.user = userLogin()
         self.user.run()
+        # self.appID = self.user.appID
+        self.sleepSec = 65
 
     def getQuestionItem(self):
+        # logging.info(self.appID)
+        start = time.time()
         logging.info('strat')
         desUtil = CryptoDesUtil.DESUtil()
-        for appEName in appENames:
-            response = request(method='get', url=self.chapterMenuX % (appEName), headers=self.user.headers)
+        num = 0
+        num2 = 0
+        allType = {}
+        logging.info(appENames)
+        response = request(method='get', url=self.appVersion % (appENames, self.user.guid), headers=self.user.headers)
+        apps = loads(response.text)['data']
+        for app in apps:
+            logging.error('-----------------' + str(app['AppID']) + ':' + app['AppEName'] + '---------------')
+            response = request(method='get', url=self.chapterMenuX % (app['AppEName']), headers=self.user.headers)
             menuInfo = loads(response.text)
+            # logging.info(menuInfo)
             menuInfo2 = loads(menuInfo['data']['ChapterMenuJson'])
             for menu_level2 in menuInfo2['Childs']:
                 # 一级菜单名称
                 srcName = menu_level2['Name']
-                # logging.info(loads(menu_level2))
+                # logging.info('----------'+dumps(menu_level2))
                 for menu_level3 in menu_level2['Childs']:
                     sbjName = menu_level3['Name']
-                    for testEx_item in menuInfo2['Childs'][0]['Childs'][0]['Childs']:
+                    for testEx_item in menu_level3['Childs']:
                         # 二级菜单名称
                         # 试卷名称
                         cptName = testEx_item['Name']
-                        arr_testEx_items = []
+                        logging.info('@@@@@@@@@@@@@@@@@' + str(testEx_item['ID']) + '.' + cptName + '@@@@@@@@@@@@@@@@@')
+                        # arr_testEx_items = []
                         # 考题
-                        TestEx_data = {"appID": self.appID,
+                        TestEx_data = {"appID": app['AppID'],
                                        "cptID": testEx_item['ID'],
                                        "queryHistory": 1,
                                        "queryTestInfo": 1,
@@ -58,22 +80,18 @@ class QuestionItem:
                                        "guid": self.user.guid,
                                        "agentCode": self.agentCode,
                                        "clientver": "wide.ksbao.com"}
-                        # logging.info(TestEx_data)
                         response = post(url=self.url_chapterTestEx, headers=self.user.headers, data=TestEx_data)
-
+                        logging.info(response.text)
                         testEx_info = loads(response.text)
-
-                        # logging.info(response.text)
-                        #获取TestInfo信息，答题人数、答对人数、收藏人数、讨论人数、解析人数、等信息，以字典的方式保存，供后面程序合并保存
-                        testInfo ={}
+                        logging.info(testEx_item)
+                        # 获取TestInfo信息，答题人数、答对人数、收藏人数、讨论人数、解析人数、等信息，以字典的方式保存，供后面程序合并保存
+                        testInfo = {}
                         for testInfo_items in testEx_info['data']['testInfo']:
-                            if testInfo_items['ChildTableID'] == -1 :
+                            if testInfo_items['ChildTableID'] == -1:
                                 testInfo[testInfo_items['AllTestID']] = testInfo_items['Statistics']['Test']
                             else:
-                                testInfo[str(testInfo_items['AllTestID'])+'-'+str(testInfo_items['ChildTableID'])] = testInfo_items['Statistics']['Test']
-                                logging.info(str(testInfo_items['AllTestID'])+'-'+str(testInfo_items['ChildTableID']))
-                            # logging.debug("testInfo")
-
+                                testInfo[str(testInfo_items['AllTestID']) + '-' + str(testInfo_items['ChildTableID'])] = testInfo_items['Statistics']['Test']
+                            num2 = num2 + 1
 
                         for testEx_items in testEx_info['data']['test']['StyleItems']:
                             # logging.debug("test_items")
@@ -102,7 +120,12 @@ class QuestionItem:
                                 testEx_item['sbjName'] = sbjName
                                 # 试卷名称
                                 testEx_item['CptName'] = cptName
-                                # testEx_item['AppID'] = self.appID
+
+                                # appEName
+                                testEx_item['appEName'] = app['AppEName']
+                                # 图片路径
+                                testEx_item['pic_path'] = 'http://t.api.ksbao.com/tk_img/ImgDir_%s/' % (app['AppEName'])
+                                testEx_item['AppID'] = app['AppID']
                                 '''
                                 TestInfo
                                 '''
@@ -117,35 +140,14 @@ class QuestionItem:
                                 #     testEx_item['ExplainCount'] = testInfoStatistics['ExplainCount']
                                 #     testEx_item['ConcernCount'] = testInfoStatistics['ConcernCount']
 
-                                #ATEST处理方式
-
-                                if testEx_items['Type'] == 'ATEST':
-                                    logging.debug("==========ATEST==========")
+                                allType[testEx_items['Type']] = 'test'
+                                logging.debug("==========" + testEx_items['Type'] + "==========")
+                                # ATEST处理方式
+                                if testEx_items['Type'] == 'ATEST' or testEx_items['Type'] == 'XTEST':
+                                    # logging.debug("=========="+testEx_items['Type']+"==========")
                                     if testEx_item.get('AllTestID'):
-                                        testInfoStatistics = testInfo[testEx_item['AllTestID']]
-                                        testEx_item['AppID'] = testInfoStatistics['AppID']
-                                        testEx_item['ChildTableID'] = testInfoStatistics['ChildTableID']
-                                        testEx_item['UserCount'] = testInfoStatistics['UserCount']
-                                        testEx_item['RightCount'] = testInfoStatistics['RightCount']
-                                        testEx_item['FavCount'] = testInfoStatistics['FavCount']
-                                        testEx_item['DiscussionCount'] = testInfoStatistics['DiscussionCount']
-                                        testEx_item['ExplainCount'] = testInfoStatistics['ExplainCount']
-                                        testEx_item['ConcernCount'] = testInfoStatistics['ConcernCount']
-                                    testEx_item['Title'] = desUtil.decrypt(ciphertext=testEx_item['Title'])
-                                    db_questionItem.insert(testEx_item)
-                                    logging.info(testEx_item)
-                                # BTEST题 增加BTestID、BTestItems、FrontTitle
-                                elif testEx_items['Type'] == 'BTEST':
-
-                                    logging.debug("==========BTEST==========")
-                                    # FrontTitle必须放在循环外面，否足MongoDB会报_ID重复的错误
-                                    testEx_item['FrontTitle'] = desUtil.decrypt(ciphertext=testEx_item['FrontTitle'])
-                                    bTest_items = testEx_item['BTestItems']
-                                    for bTest_item in testEx_item['BTestItems']:
-                                        if testEx_item.get('AllTestID'):
-                                            logging.info(bTest_item)
-                                            testInfoStatistics = testInfo[str(testEx_item['AllTestID']) + '-' + str(bTest_item['BTestItemID'])]
-                                            testEx_item['AppID'] = testInfoStatistics['AppID']
+                                        if testInfo[testEx_item['AllTestID']] is not None:
+                                            testInfoStatistics = testInfo[testEx_item['AllTestID']]
                                             testEx_item['ChildTableID'] = testInfoStatistics['ChildTableID']
                                             testEx_item['UserCount'] = testInfoStatistics['UserCount']
                                             testEx_item['RightCount'] = testInfoStatistics['RightCount']
@@ -153,6 +155,45 @@ class QuestionItem:
                                             testEx_item['DiscussionCount'] = testInfoStatistics['DiscussionCount']
                                             testEx_item['ExplainCount'] = testInfoStatistics['ExplainCount']
                                             testEx_item['ConcernCount'] = testInfoStatistics['ConcernCount']
+                                        else:
+                                            testEx_item['ChildTableID'] = -1
+                                            testEx_item['UserCount'] = 0
+                                            testEx_item['RightCount'] = 0
+                                            testEx_item['FavCount'] = 0
+                                            testEx_item['DiscussionCount'] = 0
+                                            testEx_item['ExplainCount'] = 0
+                                            testEx_item['ConcernCount'] = 0
+
+                                    testEx_item['Title'] = desUtil.decrypt(ciphertext=testEx_item['Title'])
+                                    db_questionItem.insert(testEx_item)
+                                    logging.info(testEx_item)
+                                    num = num + 1
+                                # BTEST题 增加BTestID、BTestItems、FrontTitle
+                                elif testEx_items['Type'] == 'BTEST':
+
+                                    # logging.debug("==========BTEST==========")
+                                    # FrontTitle必须放在循环外面，否足MongoDB会报_ID重复的错误
+                                    testEx_item['FrontTitle'] = desUtil.decrypt(ciphertext=testEx_item['FrontTitle'])
+                                    bTest_items = testEx_item['BTestItems']
+                                    for bTest_item in testEx_item['BTestItems']:
+                                        if testEx_item.get('AllTestID'):
+                                            if testInfo[str(testEx_item['AllTestID']) + '-' + str(bTest_item['BTestItemID'])] is not None:
+                                                testInfoStatistics = testInfo[str(testEx_item['AllTestID']) + '-' + str(bTest_item['BTestItemID'])]
+                                                testEx_item['ChildTableID'] = testInfoStatistics['ChildTableID']
+                                                testEx_item['UserCount'] = testInfoStatistics['UserCount']
+                                                testEx_item['RightCount'] = testInfoStatistics['RightCount']
+                                                testEx_item['FavCount'] = testInfoStatistics['FavCount']
+                                                testEx_item['DiscussionCount'] = testInfoStatistics['DiscussionCount']
+                                                testEx_item['ExplainCount'] = testInfoStatistics['ExplainCount']
+                                                testEx_item['ConcernCount'] = testInfoStatistics['ConcernCount']
+                                            else:
+                                                testEx_item['ChildTableID'] = -1
+                                                testEx_item['UserCount'] = 0
+                                                testEx_item['RightCount'] = 0
+                                                testEx_item['FavCount'] = 0
+                                                testEx_item['DiscussionCount'] = 0
+                                                testEx_item['ExplainCount'] = 0
+                                                testEx_item['ConcernCount'] = 0
 
                                         testEx_item['BTestItemID'] = bTest_item['BTestItemID']
                                         testEx_item['Explain'] = bTest_item['Explain']
@@ -161,24 +202,33 @@ class QuestionItem:
                                         testEx_item['Title'] = desUtil.decrypt(ciphertext=bTest_item['Title'])
                                         db_questionItem.insert(testEx_item.copy())
                                         logging.info(testEx_item)
+                                        num = num + 1
 
 
                                 # A3TEST题 增加A3TestID、A3TestItems、FrontTitle
                                 elif testEx_items['Type'] == 'A3TEST':
-                                    logging.debug("==========A3TEST==========")
+                                    # logging.debug("==========A3TEST==========")
                                     # FrontTitle必须放在循环外面，否足MongoDB会报_ID重复的错误
                                     testEx_item['FrontTitle'] = desUtil.decrypt(ciphertext=testEx_item['FrontTitle'])
                                     for a3Test_item in testEx_item['A3TestItems']:
                                         if testEx_item.get('AllTestID'):
-                                            testInfoStatistics = testInfo[str(testEx_item['AllTestID']) + '-' + str(a3Test_item['A3TestItemID'])]
-                                            testEx_item['AppID'] = testInfoStatistics['AppID']
-                                            testEx_item['ChildTableID'] = testInfoStatistics['ChildTableID']
-                                            testEx_item['UserCount'] = testInfoStatistics['UserCount']
-                                            testEx_item['RightCount'] = testInfoStatistics['RightCount']
-                                            testEx_item['FavCount'] = testInfoStatistics['FavCount']
-                                            testEx_item['DiscussionCount'] = testInfoStatistics['DiscussionCount']
-                                            testEx_item['ExplainCount'] = testInfoStatistics['ExplainCount']
-                                            testEx_item['ConcernCount'] = testInfoStatistics['ConcernCount']
+                                            if testInfo[str(testEx_item['AllTestID']) + '-' + str(a3Test_item['A3TestItemID'])] is not None:
+                                                testInfoStatistics = testInfo[str(testEx_item['AllTestID']) + '-' + str(a3Test_item['A3TestItemID'])]
+                                                testEx_item['ChildTableID'] = testInfoStatistics['ChildTableID']
+                                                testEx_item['UserCount'] = testInfoStatistics['UserCount']
+                                                testEx_item['RightCount'] = testInfoStatistics['RightCount']
+                                                testEx_item['FavCount'] = testInfoStatistics['FavCount']
+                                                testEx_item['DiscussionCount'] = testInfoStatistics['DiscussionCount']
+                                                testEx_item['ExplainCount'] = testInfoStatistics['ExplainCount']
+                                                testEx_item['ConcernCount'] = testInfoStatistics['ConcernCount']
+                                            else:
+                                                testEx_item['ChildTableID'] = -1
+                                                testEx_item['UserCount'] = 0
+                                                testEx_item['RightCount'] = 0
+                                                testEx_item['FavCount'] = 0
+                                                testEx_item['DiscussionCount'] = 0
+                                                testEx_item['ExplainCount'] = 0
+                                                testEx_item['ConcernCount'] = 0
 
                                         testEx_item['A3TestItemID'] = a3Test_item['A3TestItemID']
                                         testEx_item['Explain'] = a3Test_item['Explain']
@@ -189,11 +239,18 @@ class QuestionItem:
 
                                         db_questionItem.insert(testEx_item.copy())
                                         logging.info(testEx_item)
-                                    # logging.info("==============A3TEST===========")
-                                # logging.info(testEx_item)
+                                        num = num + 1
+                        # 休眠时间
+                        self.sleepSec = random.randint(15, 55)
 
-                        logging.warning("休息2分钟继续抓......")
-                        time.sleep(75)
+                        logging.warning("休息" + str(self.sleepSec) + "秒继续抓......")
+                        logging.info('num:' + str(num))
+                        logging.info('num2:' + str(num2))
+                        logging.info(allType)
+                        time.sleep(self.sleepSec)
+
+        end = time.time()
+        print((end - start) / 60)
 
     def run(self):
         self.getQuestionItem()
