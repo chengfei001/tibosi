@@ -19,9 +19,17 @@ db_questionItem = db.QuestionItem
 db_questionAnswer = db.QuestionAnswer
 db_PoolItem = db.PoolItem
 
+
+#住院医师规培结业考试
+# 18824329661  通用版-口腔颌面外科     中医耳鼻咽喉科   放射科 中医
+appENames = '["ZYYS_KQHMWK","ZYYS_ZYEBYHK","ZYYS_FSK","ZYYS_ZYT"]'
+
+# 卓家进 通用版-耳鼻咽喉科ZYYS_EBYHK，通用版-临床病理科ZYYS_LCBLK，通用版-医学检验科ZYYS_EXJYK，通用版-超声医学科ZYYS_CSYXK
+# appENames = '["ZYYS_EBYHK","ZYYS_LCBLK","ZYYS_EXJYK","ZYYS_CSYXK"]'
+
 # 曹惠子账号 13811378722 ，通用版-麻醉科，通用版-精神科，通用版-儿外科，通用版-急诊科
 # appENames = '["ZYYS_MZK","ZYYS_JSK","ZYYS_EWK","ZYYS_JZK"]'
-appENames = '["ZYYS_MZK","ZYYS_JZK","ZYYS_JSK"]'
+# appENames = '["ZYYS_MZK"]'
 
 
 # # 要抓取的科室 何燕账号 1506
@@ -43,6 +51,7 @@ class QuestionItem:
         self.sleepSec = 65
 
     def getQuestionItem(self):
+        print(time.time())
         # logging.info(self.appID)
         start = time.time()
         logging.info('strat')
@@ -166,7 +175,7 @@ class QuestionItem:
 
                                     testEx_item['Title'] = desUtil.decrypt(ciphertext=testEx_item['Title'])
                                     db_questionItem.insert(testEx_item)
-                                    logging.info(testEx_item)
+                                    # logging.info(testEx_item)
                                     num = num + 1
                                 # BTEST题 增加BTestID、BTestItems、FrontTitle
                                 elif testEx_items['Type'] == 'BTEST':
@@ -201,7 +210,7 @@ class QuestionItem:
                                         testEx_item['Answer'] = bTest_item['Answer']
                                         testEx_item['Title'] = desUtil.decrypt(ciphertext=bTest_item['Title'])
                                         db_questionItem.insert(testEx_item.copy())
-                                        logging.info(testEx_item)
+                                        # logging.info(testEx_item)
                                         num = num + 1
 
 
@@ -238,10 +247,10 @@ class QuestionItem:
                                         testEx_item['Title'] = desUtil.decrypt(ciphertext=a3Test_item['Title'])
 
                                         db_questionItem.insert(testEx_item.copy())
-                                        logging.info(testEx_item)
+                                        # logging.info(testEx_item)
                                         num = num + 1
                         # 休眠时间
-                        self.sleepSec = random.randint(15, 55)
+                        self.sleepSec = random.randint(13, 35)
 
                         logging.warning("休息" + str(self.sleepSec) + "秒继续抓......")
                         logging.info('num:' + str(num))
@@ -251,6 +260,7 @@ class QuestionItem:
 
         end = time.time()
         print((end - start) / 60)
+        print(end)
 
     def run(self):
         self.getQuestionItem()
