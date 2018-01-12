@@ -9,7 +9,7 @@ import time
 from login import userLogin
 import CryptoDesUtil
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.INFO, filemode='ChapterTestEx.log', format='%(asctime)s - %(levelname)s - %(message)s')
 
 # mongoDB
 client = MongoClient(host='localhost', port=27017)
@@ -21,9 +21,32 @@ db_PoolItem = db.PoolItem
 
 
 #住院医师规培结业考试
-# 18824329661  通用版-口腔颌面外科     中医耳鼻咽喉科   放射科 中医
-appENames = '["ZYYS_KQHMWK","ZYYS_ZYEBYHK","ZYYS_FSK","ZYYS_ZYT"]'
 
+apps = [{'user': '13811378722', 'apps': '[\"ZYYS_MZK\",\"ZYYS_JSK\",\"ZYYS_EWK\","ZYYS_JZK\"]'}
+         , {'user': '13671031359', 'apps': '[\"ZYYS_EBYHK\", \"ZYYS_LCBLK\", \"ZYYS_EXJYK\", \"ZYYS_CSYXK\"]'}
+         , {'user': '15010670639', 'apps': '[\"ZYYS_WK\"]'}
+         , {'user': '18824329661', 'apps': '[\"ZYYS_KQHMWK\",\"ZYYS_ZYEBYHK\",\"ZYYS_FSK\",\"ZYYS_ZYT\"]'}
+         , {'user': '15210928290', 'apps': '[\"ZYYS_PFK\",\"ZYYS_QKYX\",\"ZYYS_SJNK\",\"ZYYS_KFYX\"]'}
+         , {'user': '18531246153', 'apps': '[\"ZYYS_GK\",\"ZYYS_YK\",\"ZYYS_YXYX\",\"ZYYS_HYXK\"]'}
+         , {'user': '13811317037', 'apps': '[\"ZYYS_ZXWK\", \"ZYYS_XXWK\", \"ZYYS_MNWK\", \"ZYYS_ZXWK\"]'}
+        ]
+# ['ZYYS_NK', 'ZYYS_WK', 'ZYYS_EK', 'ZYYS_FCK']
+userList = {'13811378722','13671031359','15010670639','13811317037'}
+# userList = {'15010670639'}
+
+
+# 13811317037 整形外科 ZYYS_ZXWK 5997 ，  胸心外科 ZYYS_XXWK 7678，泌尿外科 ZYYS_MNWK 7540，整形外科 ZYYS_ZXWK 5797
+# 18531246153 通用版-骨科ZYYS_GK5248、眼科ZYYS_YK4462、医学影像ZYYS_YXYX6882、核医学科ZYYS_HYXK4674
+# appENames = '["ZYYS_GK","ZYYS_YK","ZYYS_YXYX","ZYYS_HYXK"]'
+
+# 15210928290 皮肤科ZYYS_PFK4286 神经内科ZYYS_SJNK5976 全科医学ZYYS_QKYX7174 康复医学ZYYS_KFYX6503
+# appENames = '["ZYYS_PFK","ZYYS_QKYX","ZYYS_SJNK","ZYYS_KFYX"]'
+
+# 18824329661  通用版-口腔颌面外科     中医耳鼻咽喉科   放射科 中医
+# appENames = '["ZYYS_KQHMWK","ZYYS_ZYEBYHK","ZYYS_FSK","ZYYS_ZYT"]'
+
+
+'''一下都要重新抓取一次'''
 # 卓家进 通用版-耳鼻咽喉科ZYYS_EBYHK，通用版-临床病理科ZYYS_LCBLK，通用版-医学检验科ZYYS_EXJYK，通用版-超声医学科ZYYS_CSYXK
 # appENames = '["ZYYS_EBYHK","ZYYS_LCBLK","ZYYS_EXJYK","ZYYS_CSYXK"]'
 
@@ -33,8 +56,11 @@ appENames = '["ZYYS_KQHMWK","ZYYS_ZYEBYHK","ZYYS_FSK","ZYYS_ZYT"]'
 
 
 # # 要抓取的科室 何燕账号 1506
-# # appENames = {'ZYYS_WK'}#{'ZYYS_NK', 'ZYYS_WK', 'ZYYS_EK', 'ZYYS_FCK'}
+# # appENames = {'ZYYS_WK'}#{'ZYYS_NK', 'ZYYS_EK', 'ZYYS_FCK'}
 # appENames = '["ZYYS_NK", "ZYYS_WK", "ZYYS_EK", "ZYYS_FCK"]'
+# appENames = '["ZYYS_WK"]'
+
+
 
 class QuestionItem:
     def __init__(self):
@@ -45,22 +71,21 @@ class QuestionItem:
         self.url_chapterTestEx = 'http://gfapi.ksbao.com/api/exam/getChapterTestEx'
         self.chapterMenuX = 'http://gfapi.ksbao.com/api/chapterMenu/getChapterMenuX?clientver=wide.ksbao.com&appEName=%s'
         self.appVersion = 'http://gfapi.ksbao.com/api/app/appVersionInfo?appENames=%s&guid=%s&agentCode=889&clientver=wide.ksbao.com'
-        self.user = userLogin()
-        self.user.run()
-        # self.appID = self.user.appID
-        self.sleepSec = 65
+        # self.user = userLogin()
+        # self.user.run()
 
     def getQuestionItem(self):
-        print(time.time())
-        # logging.info(self.appID)
+
         start = time.time()
-        logging.info('strat')
+        # logging.info(self.appID)
         desUtil = CryptoDesUtil.DESUtil()
         num = 0
         num2 = 0
         allType = {}
-        logging.info(appENames)
-        response = request(method='get', url=self.appVersion % (appENames, self.user.guid), headers=self.user.headers)
+        logging.info(self.appENames)
+        logging.info(self.user.guid)
+        response = request(method='get', url=self.appVersion % (self.appENames, self.user.guid), headers=self.user.headers)
+        logging.info(response.text)
         apps = loads(response.text)['data']
         for app in apps:
             logging.error('-----------------' + str(app['AppID']) + ':' + app['AppEName'] + '---------------')
@@ -78,7 +103,7 @@ class QuestionItem:
                         # 二级菜单名称
                         # 试卷名称
                         cptName = testEx_item['Name']
-                        logging.info('@@@@@@@@@@@@@@@@@' + str(testEx_item['ID']) + '.' + cptName + '@@@@@@@@@@@@@@@@@')
+                        # logging.info('@@@@@@@@@@@@@@@@@' + str(testEx_item['ID']) + '.' + cptName + '@@@@@@@@@@@@@@@@@')
                         # arr_testEx_items = []
                         # 考题
                         TestEx_data = {"appID": app['AppID'],
@@ -90,9 +115,9 @@ class QuestionItem:
                                        "agentCode": self.agentCode,
                                        "clientver": "wide.ksbao.com"}
                         response = post(url=self.url_chapterTestEx, headers=self.user.headers, data=TestEx_data)
-                        logging.info(response.text)
+                        # logging.info(response.text)
                         testEx_info = loads(response.text)
-                        logging.info(testEx_item)
+                        # logging.info(testEx_item)
                         # 获取TestInfo信息，答题人数、答对人数、收藏人数、讨论人数、解析人数、等信息，以字典的方式保存，供后面程序合并保存
                         testInfo = {}
                         for testInfo_items in testEx_info['data']['testInfo']:
@@ -110,6 +135,7 @@ class QuestionItem:
                             test_ex_Score = testEx_items['Score']
                             test_ex_Type = testEx_items['Type']
                             test_ex_SubType = testEx_items['SubType']
+                            test_ex_num = 0
                             for testEx_item in testEx_items['TestItems']:
 
                                 # logging.debug("test_Item")
@@ -150,9 +176,10 @@ class QuestionItem:
                                 #     testEx_item['ConcernCount'] = testInfoStatistics['ConcernCount']
 
                                 allType[testEx_items['Type']] = 'test'
-                                logging.debug("==========" + testEx_items['Type'] + "==========")
+                                # logging.debug("==========" + testEx_items['Type'] + "==========")
                                 # ATEST处理方式
                                 if testEx_items['Type'] == 'ATEST' or testEx_items['Type'] == 'XTEST':
+                                    test_ex_num = test_ex_num + 1
                                     # logging.debug("=========="+testEx_items['Type']+"==========")
                                     if testEx_item.get('AllTestID'):
                                         if testInfo[testEx_item['AllTestID']] is not None:
@@ -185,6 +212,7 @@ class QuestionItem:
                                     testEx_item['FrontTitle'] = desUtil.decrypt(ciphertext=testEx_item['FrontTitle'])
                                     bTest_items = testEx_item['BTestItems']
                                     for bTest_item in testEx_item['BTestItems']:
+                                        test_ex_num = test_ex_num + 1
                                         if testEx_item.get('AllTestID'):
                                             if testInfo[str(testEx_item['AllTestID']) + '-' + str(bTest_item['BTestItemID'])] is not None:
                                                 testInfoStatistics = testInfo[str(testEx_item['AllTestID']) + '-' + str(bTest_item['BTestItemID'])]
@@ -220,6 +248,7 @@ class QuestionItem:
                                     # FrontTitle必须放在循环外面，否足MongoDB会报_ID重复的错误
                                     testEx_item['FrontTitle'] = desUtil.decrypt(ciphertext=testEx_item['FrontTitle'])
                                     for a3Test_item in testEx_item['A3TestItems']:
+                                        test_ex_num = test_ex_num + 1
                                         if testEx_item.get('AllTestID'):
                                             if testInfo[str(testEx_item['AllTestID']) + '-' + str(a3Test_item['A3TestItemID'])] is not None:
                                                 testInfoStatistics = testInfo[str(testEx_item['AllTestID']) + '-' + str(a3Test_item['A3TestItemID'])]
@@ -249,21 +278,50 @@ class QuestionItem:
                                         db_questionItem.insert(testEx_item.copy())
                                         # logging.info(testEx_item)
                                         num = num + 1
-                        # 休眠时间
-                        self.sleepSec = random.randint(13, 35)
+                                elif testEx_items['Type'] == 'PDTEST' or testEx_items['Type'] == 'TKTEST' or testEx_items['Type'] == 'JDTEST':
+                                    if testEx_item.get('AllTestID'):
+                                        if testInfo[testEx_item['AllTestID']] is not None:
+                                            testInfoStatistics = testInfo[testEx_item['AllTestID']]
+                                            testEx_item['ChildTableID'] = testInfoStatistics['ChildTableID']
+                                            testEx_item['UserCount'] = testInfoStatistics['UserCount']
+                                            testEx_item['RightCount'] = testInfoStatistics['RightCount']
+                                            testEx_item['FavCount'] = testInfoStatistics['FavCount']
+                                            testEx_item['DiscussionCount'] = testInfoStatistics['DiscussionCount']
+                                            testEx_item['ExplainCount'] = testInfoStatistics['ExplainCount']
+                                            testEx_item['ConcernCount'] = testInfoStatistics['ConcernCount']
+                                        else:
+                                            testEx_item['ChildTableID'] = -1
+                                            testEx_item['UserCount'] = 0
+                                            testEx_item['RightCount'] = 0
+                                            testEx_item['FavCount'] = 0
+                                            testEx_item['DiscussionCount'] = 0
+                                            testEx_item['ExplainCount'] = 0
+                                            testEx_item['ConcernCount'] = 0
+                                    # 保存判断，简答和填空题
+                                    db_questionItem.insert(testEx_item.copy())
 
-                        logging.warning("休息" + str(self.sleepSec) + "秒继续抓......")
-                        logging.info('num:' + str(num))
-                        logging.info('num2:' + str(num2))
-                        logging.info(allType)
+                                    testEx_item['Title'] = desUtil.decrypt(ciphertext=testEx_item['Title'])
+                                else:
+                                    logging.info('@@@@@@@@@@@@@@@@@'+ '.' + cptName + '-'+ sbjName +'-'+ srcName+'-'+ cptName +'='+str(test_ex_num)+'-'+testEx_items['Type']+'@@@@@@@@@@@@@@@@@')
+                        # 休眠时间
+                        self.sleepSec = random.randint(6, 14)
+
+                        # logging.warning("休息" + str(self.sleepSec) + "秒继续抓......")
                         time.sleep(self.sleepSec)
+            logging.info('num:' + str(num))
+            logging.info('num2:' + str(num2))
+            logging.info(allType)
 
         end = time.time()
         print((end - start) / 60)
-        print(end)
-
+        print(time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time())))
     def run(self):
-        self.getQuestionItem()
+        for user in apps:
+            if  user['user']in userList:
+                self.user = userLogin(user['user'])
+                self.user.run()
+                self.appENames= user['apps']
+                self.getQuestionItem()
 
 
 if __name__ == '__main__':
