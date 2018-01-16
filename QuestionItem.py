@@ -20,24 +20,48 @@ db_questionAnswer = db.QuestionAnswer
 db_PoolItem = db.PoolItem
 
 
+# 江苏 住院医师规培结业考试 内科 ZYYS_JSNKYJD 14759
+
 #住院医师规培结业考试
 
-apps = [{'user': '13811378722', 'apps': '[\"ZYYS_MZK\",\"ZYYS_JSK\",\"ZYYS_EWK\","ZYYS_JZK\"]'}
-         , {'user': '13671031359', 'apps': '[\"ZYYS_EBYHK\", \"ZYYS_LCBLK\", \"ZYYS_EXJYK\", \"ZYYS_CSYXK\"]'}
-         , {'user': '15010670639', 'apps': '[\"ZYYS_WK\"]'}
-         , {'user': '18824329661', 'apps': '[\"ZYYS_KQHMWK\",\"ZYYS_ZYEBYHK\",\"ZYYS_FSK\",\"ZYYS_ZYT\"]'}
-         , {'user': '15210928290', 'apps': '[\"ZYYS_PFK\",\"ZYYS_QKYX\",\"ZYYS_SJNK\",\"ZYYS_KFYX\"]'}
-         , {'user': '18531246153', 'apps': '[\"ZYYS_GK\",\"ZYYS_YK\",\"ZYYS_YXYX\",\"ZYYS_HYXK\"]'}
-         , {'user': '13811317037', 'apps': '[\"ZYYS_ZXWK\", \"ZYYS_XXWK\", \"ZYYS_MNWK\", \"ZYYS_ZXWK\"]'}
+apps = [{'user': '13811378722', 'apps': '[]'}
+         , {'user': '13671031359', 'apps': '[]'}
+         , {'user': '15010670639', 'apps': '[\"ZYYS_JSNKYJD\"]'}
+         , {'user': '18824329661', 'apps': '[]'}
+         , {'user': '15210928290', 'apps': '[]'}
+         , {'user': '18531246153', 'apps': '[]'}
+         , {'user': '13811317037', 'apps': '[]'}
         ]
+userList = {'15010670639'}
+
+# 账号对应抓取的学科
+# apps = [{'user': '13811378722', 'apps': '[\"ZYYS_MZK\",\"ZYYS_JSK\",\"ZYYS_EWK\","ZYYS_JZK\"]'}
+#          , {'user': '13671031359', 'apps': '[\"ZYYS_EBYHK\", \"ZYYS_LCBLK\", \"ZYYS_EXJYK\", \"ZYYS_CSYXK\"]'}
+#          , {'user': '15010670639', 'apps': '[\"ZYYS_NK\", \"ZYYS_WK\", \"ZYYS_EK\", \"ZYYS_FCK\"]'}
+#          , {'user': '18824329661', 'apps': '[\"ZYYS_KQHMWK\",\"ZYYS_ZYEBYHK\",\"ZYYS_FSK\",\"ZYYS_ZYT\"]'}
+#          , {'user': '15210928290', 'apps': '[\"ZYYS_PFK\",\"ZYYS_QKYX\",\"ZYYS_SJNK\",\"ZYYS_KFYX\"]'}
+#          , {'user': '18531246153', 'apps': '[\"ZYYS_GK\",\"ZYYS_YK\",\"ZYYS_YXYX\",\"ZYYS_HYXK\", \"ZYYS_FSZLK\",\"ZYYS_YFYXK\",\"ZYYS_KQQK\",\"ZYYS_KQNK\",\"ZYYS_KQXFK\",\"ZYYS_KQZJK\",\"ZYYS_KQBLK\", \"ZYYS_ZYEK\", \"ZYYS_ZYFK\",\"ZYYS_ZYGSK\",\"ZYYS_ZYKFK\",\"ZYYS_ZYNK\",\"ZYYS_ZYQK\",\"ZYYS_ZYWK\",\"ZYYS_ZYYK\",\"ZYYS_TNK\",\"ZYYS_ZJK\"]'}
+#          , {'user': '13811317037', 'apps': '[\"ZYYS_ZXWK\", \"ZYYS_XXWK\", \"ZYYS_MNWK\", \"ZYYS_ZXWK\"]'}
+#         ]
+
+# , {'user': '18531246153', 'apps': '[\"ZYYS_GK\",\"ZYYS_YK\",\"ZYYS_YXYX\",\"ZYYS_HYXK\"]'}
 # ['ZYYS_NK', 'ZYYS_WK', 'ZYYS_EK', 'ZYYS_FCK']
-userList = {'13811378722','13671031359','15010670639','13811317037'}
+# 要抓取的账号
+# userList = {'18531246153'}
 # userList = {'15010670639'}
 
 
 # 13811317037 整形外科 ZYYS_ZXWK 5997 ，  胸心外科 ZYYS_XXWK 7678，泌尿外科 ZYYS_MNWK 7540，整形外科 ZYYS_ZXWK 5797
 # 18531246153 通用版-骨科ZYYS_GK5248、眼科ZYYS_YK4462、医学影像ZYYS_YXYX6882、核医学科ZYYS_HYXK4674
 # appENames = '["ZYYS_GK","ZYYS_YK","ZYYS_YXYX","ZYYS_HYXK"]'
+
+# （1）通用版-放射肿瘤科 ZYYS_FSZLK 8006
+#
+#
+#
+#
+#
+# 、预防医学科 ZYYS_YFYXK 10042、口腔全科 ZYYS_KQQK 9112、口腔内科 ZYYS_KQNK 9026  通用版-口腔修复科 ZYYS_KQXFK 11414、口腔正畸科 ZYYS_KQZJK 9009、口腔病理科 ZYYS_KQBLK 8513、中医儿科 ZYYS_ZYEK 8089 通用版：中医妇科 ZYYS_ZYFK 9820、中医骨伤科 ZYYS_ZYGSK 10205、中医康复科 ZYYS_ZYKFK 9684、中医内科 ZYYS_ZYNK 9434、中医全科 ZYYS_ZYQK 11737 通用版-中医外科 ZYYS_ZYWK 7096、中医眼科 ZYYS_ZYYK 6129、推拿科 ZYYS_TNK 9290、针灸科 ZYYS_ZJK 9820
 
 # 15210928290 皮肤科ZYYS_PFK4286 神经内科ZYYS_SJNK5976 全科医学ZYYS_QKYX7174 康复医学ZYYS_KFYX6503
 # appENames = '["ZYYS_PFK","ZYYS_QKYX","ZYYS_SJNK","ZYYS_KFYX"]'
@@ -138,17 +162,14 @@ class QuestionItem:
                             test_ex_num = 0
                             for testEx_item in testEx_items['TestItems']:
 
-                                # logging.debug("test_Item")
-                                # logging.debug(testEx_item)
                                 # 公共数据部分
-
-
                                 testEx_item['StyleID'] = testEx_items['StyleID']
                                 testEx_item['Style'] = testEx_items['Style']
                                 testEx_item['Explain'] = testEx_items['Explain']
                                 testEx_item['Score'] = testEx_items['Score']
                                 testEx_item['Type'] = testEx_items['Type']
                                 testEx_item['SubType'] = testEx_items['SubType']
+                                testEx_item['province'] = 'JS'
                                 # 一级菜单名称
                                 testEx_item['srcName'] = srcName
                                 # 二级菜单名称
@@ -161,22 +182,11 @@ class QuestionItem:
                                 # 图片路径
                                 testEx_item['pic_path'] = 'http://t.api.ksbao.com/tk_img/ImgDir_%s/' % (app['AppEName'])
                                 testEx_item['AppID'] = app['AppID']
+
                                 '''
                                 TestInfo
                                 '''
-                                # if testEx_item.get('AllTestID'):
-                                #     testInfoStatistics = testInfo[testEx_item['AllTestID']]
-                                #     testEx_item['AppID'] = testInfoStatistics['AppID']
-                                #     testEx_item['ChildTableID'] = testInfoStatistics['ChildTableID']
-                                #     testEx_item['UserCount'] = testInfoStatistics['UserCount']
-                                #     testEx_item['RightCount'] = testInfoStatistics['RightCount']
-                                #     testEx_item['FavCount'] = testInfoStatistics['FavCount']
-                                #     testEx_item['DiscussionCount'] = testInfoStatistics['DiscussionCount']
-                                #     testEx_item['ExplainCount'] = testInfoStatistics['ExplainCount']
-                                #     testEx_item['ConcernCount'] = testInfoStatistics['ConcernCount']
-
                                 allType[testEx_items['Type']] = 'test'
-                                # logging.debug("==========" + testEx_items['Type'] + "==========")
                                 # ATEST处理方式
                                 if testEx_items['Type'] == 'ATEST' or testEx_items['Type'] == 'XTEST':
                                     test_ex_num = test_ex_num + 1
@@ -208,7 +218,6 @@ class QuestionItem:
                                 elif testEx_items['Type'] == 'BTEST':
 
                                     # logging.debug("==========BTEST==========")
-                                    # FrontTitle必须放在循环外面，否足MongoDB会报_ID重复的错误
                                     testEx_item['FrontTitle'] = desUtil.decrypt(ciphertext=testEx_item['FrontTitle'])
                                     bTest_items = testEx_item['BTestItems']
                                     for bTest_item in testEx_item['BTestItems']:
@@ -238,14 +247,11 @@ class QuestionItem:
                                         testEx_item['Answer'] = bTest_item['Answer']
                                         testEx_item['Title'] = desUtil.decrypt(ciphertext=bTest_item['Title'])
                                         db_questionItem.insert(testEx_item.copy())
-                                        # logging.info(testEx_item)
                                         num = num + 1
-
 
                                 # A3TEST题 增加A3TestID、A3TestItems、FrontTitle
                                 elif testEx_items['Type'] == 'A3TEST':
                                     # logging.debug("==========A3TEST==========")
-                                    # FrontTitle必须放在循环外面，否足MongoDB会报_ID重复的错误
                                     testEx_item['FrontTitle'] = desUtil.decrypt(ciphertext=testEx_item['FrontTitle'])
                                     for a3Test_item in testEx_item['A3TestItems']:
                                         test_ex_num = test_ex_num + 1
@@ -314,10 +320,12 @@ class QuestionItem:
 
         end = time.time()
         print((end - start) / 60)
-        print(time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time())))
+        print(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())))
     def run(self):
+        # 循环账号抓取
         for user in apps:
-            if  user['user']in userList:
+            # 根据账号列表判断是否需要抓取
+            if user['user']in userList:
                 self.user = userLogin(user['user'])
                 self.user.run()
                 self.appENames= user['apps']
