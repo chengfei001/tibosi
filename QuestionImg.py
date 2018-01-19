@@ -19,8 +19,17 @@ class QuestionImg:
     def __init__(self):
         self.file_path = '/Users/chengfei/kaoshibaodian/'
         self.pic_type = 'jpg'
+        self.pic_type2 = 'gif'
     def get_question_img(self):
-        for question in db_question_item.find({'$or':[{'Title':re.compile(self.pic_type)},{'FrontTitle':re.compile(self.pic_type)}, {'SelectedItems.Content':re.compile(self.pic_type)}]}):
+        questin_items = db_question_item.find({'$or':[{'Title':re.compile(self.pic_type)},
+                                                      {'FrontTitle':re.compile(self.pic_type)},
+                                                      {'SelectedItems.Content':re.compile(self.pic_type)},
+                                                      {'Title':re.compile(self.pic_type2)},
+                                                      {'FrontTitle':re.compile(self.pic_type2)},
+                                                      {'SelectedItems.Content':re.compile(self.pic_type2)}]
+                                               },
+                                              no_cursor_timeout=True)
+        for question in questin_items:
 
             pic_path = question['pic_path']
             app_ename = question['appEName']
@@ -35,6 +44,7 @@ class QuestionImg:
             for selected in question['SelectedItems']:
                 imgs = re.findall('\[(.*?)\]', selected['Content'])
                 self.get_img(imgs=imgs, pic_path=pic_path, app_ename=app_ename)
+        questin_items.close()
 
     def get_img(self,imgs,pic_path,app_ename):
         #存储路径 目录+ppEName
