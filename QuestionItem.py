@@ -15,9 +15,9 @@ logging.basicConfig(level=logging.INFO, filemode='ChapterTestEx.log', format='%(
 client = MongoClient(host='localhost', port=27017)
 db = client.kaoshibaodian_base
 # db2 = client.kaoshibaodian_base1
-db_questionItem = db.QuestionItem
-db_questionAnswer = db.QuestionAnswer
-db_PoolItem = db.PoolItem
+db_questionItem = db.QuestionItem_test4
+# db_questionAnswer = db.QuestionAnswer
+# db_PoolItem = db.PoolItem
 
 
 # 江苏 住院医师规培结业考试 内科 ZYYS_JSNKYJD 14759
@@ -26,7 +26,7 @@ db_PoolItem = db.PoolItem
 
 apps = [{'user': '13811378722', 'apps': '[]'}
          , {'user': '13671031359', 'apps': '[]'}
-         , {'user': '15010670639', 'apps': '[\"ZYYS_JSNKYJD\"]'}
+         , {'user': '15010670639', 'apps': '[\"ZYYS_NK\"]'}
          , {'user': '18824329661', 'apps': '[]'}
          , {'user': '15210928290', 'apps': '[]'}
          , {'user': '18531246153', 'apps': '[]'}
@@ -219,7 +219,12 @@ class QuestionItem:
 
                                     # logging.debug("==========BTEST==========")
                                     testEx_item['FrontTitle'] = desUtil.decrypt(ciphertext=testEx_item['FrontTitle'])
-                                    bTest_items = testEx_item['BTestItems']
+                                    # 增加父ID
+                                    testEx_item['Title'] = desUtil.decrypt(ciphertext=testEx_item['Title'])
+                                    testEx_item['father_id'] = 0
+                                    father_id = str(db_questionItem.insert(testEx_item.copy()))
+                                    # bTest_items = testEx_item['BTestItems']
+
                                     for bTest_item in testEx_item['BTestItems']:
                                         test_ex_num = test_ex_num + 1
                                         if testEx_item.get('AllTestID'):
@@ -246,6 +251,8 @@ class QuestionItem:
                                         testEx_item['TestPoint'] = bTest_item['TestPoint']
                                         testEx_item['Answer'] = bTest_item['Answer']
                                         testEx_item['Title'] = desUtil.decrypt(ciphertext=bTest_item['Title'])
+                                        # 增加父ID
+                                        testEx_item['father_id'] = father_id
                                         db_questionItem.insert(testEx_item.copy())
                                         num = num + 1
 
@@ -253,6 +260,9 @@ class QuestionItem:
                                 elif testEx_items['Type'] == 'A3TEST':
                                     # logging.debug("==========A3TEST==========")
                                     testEx_item['FrontTitle'] = desUtil.decrypt(ciphertext=testEx_item['FrontTitle'])
+                                    # 增加父ID
+                                    testEx_item['father_id'] = 0
+                                    father_id = str(db_questionItem.insert(testEx_item.copy()))
                                     for a3Test_item in testEx_item['A3TestItems']:
                                         test_ex_num = test_ex_num + 1
                                         if testEx_item.get('AllTestID'):
@@ -280,7 +290,8 @@ class QuestionItem:
                                         testEx_item['Answer'] = a3Test_item['Answer']
                                         testEx_item['SelectedItems'] = a3Test_item['SelectedItems']
                                         testEx_item['Title'] = desUtil.decrypt(ciphertext=a3Test_item['Title'])
-
+                                        # 增加父ID
+                                        testEx_item['father_id'] = father_id
                                         db_questionItem.insert(testEx_item.copy())
                                         # logging.info(testEx_item)
                                         num = num + 1
@@ -310,13 +321,15 @@ class QuestionItem:
                                 else:
                                     logging.info('@@@@@@@@@@@@@@@@@'+ '.' + cptName + '-'+ sbjName +'-'+ srcName+'-'+ cptName +'='+str(test_ex_num)+'-'+testEx_items['Type']+'@@@@@@@@@@@@@@@@@')
                         # 休眠时间
-                        self.sleepSec = random.randint(6, 14)
+                        self.sleepSec = random.randint(5, 13)
 
                         # logging.warning("休息" + str(self.sleepSec) + "秒继续抓......")
                         time.sleep(self.sleepSec)
+
             logging.info('num:' + str(num))
             logging.info('num2:' + str(num2))
             logging.info(allType)
+
 
         end = time.time()
         print((end - start) / 60)
