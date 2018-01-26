@@ -314,10 +314,11 @@ class QuestionItem:
                                             testEx_item['DiscussionCount'] = 0
                                             testEx_item['ExplainCount'] = 0
                                             testEx_item['ConcernCount'] = 0
+                                    testEx_item['Title'] = desUtil.decrypt(ciphertext=testEx_item['Title'])
                                     # 保存判断，简答和填空题
                                     db_questionItem.insert(testEx_item.copy())
 
-                                    testEx_item['Title'] = desUtil.decrypt(ciphertext=testEx_item['Title'])
+
                                 else:
                                     logging.info('@@@@@@@@@@@@@@@@@'+ '.' + cptName + '-'+ sbjName +'-'+ srcName+'-'+ cptName +'='+str(test_ex_num)+'-'+testEx_items['Type']+'@@@@@@@@@@@@@@@@@')
                         # 休眠时间
