@@ -191,7 +191,7 @@ class QuestionItem:
                                 # 公共数据部分
                                 testEx_item['StyleID'] = testEx_items['StyleID']
                                 testEx_item['Style'] = testEx_items['Style']
-                                testEx_item['Explain'] = testEx_items['Explain']
+                                # testEx_item['Explain'] = testEx_items['Explain']
                                 testEx_item['Score'] = testEx_items['Score']
                                 testEx_item['Type'] = testEx_items['Type']
                                 testEx_item['SubType'] = testEx_items['SubType']
