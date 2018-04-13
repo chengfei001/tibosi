@@ -11,7 +11,7 @@ db = client.kaoshibaodian_base
 db_question_item = db.QuestionItem
 
 
-
+# 生成子题
 class Question:
 
     def make_main_record(self):

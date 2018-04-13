@@ -13,9 +13,9 @@ logging.basicConfig(level=logging.INFO, filemode='ChapterTestEx.log', format='%(
 
 # mongoDB
 client = MongoClient(host='localhost', port=27017)
-db = client.kaoshibaodian_base
+db = client.kaoshibaodian_base_new
 # db2 = client.kaoshibaodian_base1
-db_questionItem = db.QuestionItem_test4
+db_questionItem = db.QuestionItem
 # db_questionAnswer = db.QuestionAnswer
 # db_PoolItem = db.PoolItem
 
@@ -23,27 +23,40 @@ db_questionItem = db.QuestionItem_test4
 # 江苏 住院医师规培结业考试 内科 ZYYS_JSNKYJD 14759
 
 #住院医师规培结业考试
+# # {'user': '13811378722', 'apps': '[\"ZYYS_YNWK\"]'}
+# apps = [{'user': '13811378722', 'apps': '[\"ZYYS_YNWK\"]'}
+#          , {'user': '13671031359', 'apps': '[]'}
+#          , {'user': '15010670639', 'apps': '[\"ZYYS_NK\"]'}
+#          , {'user': '18824329661', 'apps': '[]'}
+#          , {'user': '15210928290', 'apps': '[]'}
+#          , {'user': '18531246153', 'apps': '[]'}
+#          , {'user': '13811317037', 'apps': '[]'}
+#         ]
+# userList = {'13811378722'}
 
-apps = [{'user': '13811378722', 'apps': '[]'}
-         , {'user': '13671031359', 'apps': '[]'}
-         , {'user': '15010670639', 'apps': '[\"ZYYS_NK\"]'}
-         , {'user': '18824329661', 'apps': '[]'}
-         , {'user': '15210928290', 'apps': '[]'}
-         , {'user': '18531246153', 'apps': '[]'}
-         , {'user': '13811317037', 'apps': '[]'}
+
+apps = [{'user': '13811378722', 'apps': '[\"ZYYS_MZK\",\"ZYYS_JSK\",\"ZYYS_EWK\","ZYYS_JZK\","ZYYS_YNWK\",\"ZYYS_ZJNK\"]'}
+         , {'user': '13671031359', 'apps': '[\"ZYYS_EBYHK\", \"ZYYS_LCBLK\", \"ZYYS_EXJYK\", \"ZYYS_CSYXK\"]'}
+         , {'user': '15010670639', 'apps': '[\"ZYYS_NK\", \"ZYYS_WK\", \"ZYYS_EK\", \"ZYYS_FCK\"]'}
+         , {'user': '18824329661', 'apps': '[\"ZYYS_KQHMWK\",\"ZYYS_ZYEBYHK\",\"ZYYS_FSK\",\"ZYYS_ZYT\"]'}
+         , {'user': '15210928290', 'apps': '[\"ZYYS_PFK\",\"ZYYS_QKYX\",\"ZYYS_SJNK\",\"ZYYS_KFYX\"]'}
+         , {'user': '18531246153', 'apps': '[\"ZYYS_GK\",\"ZYYS_YK\",\"ZYYS_YXYX\",\"ZYYS_HYXK\", \"ZYYS_FSZLK\",\"ZYYS_YFYXK\",\"ZYYS_KQQK\",\"ZYYS_KQNK\",\"ZYYS_KQXFK\",\"ZYYS_KQZJK\",\"ZYYS_KQBLK\", \"ZYYS_ZYEK\", \"ZYYS_ZYFK\",\"ZYYS_ZYGSK\",\"ZYYS_ZYKFK\",\"ZYYS_ZYNK\",\"ZYYS_ZYQK\",\"ZYYS_ZYWK\",\"ZYYS_ZYYK\",\"ZYYS_TNK\",\"ZYYS_ZJK\"]'}
+         , {'user': '13811317037', 'apps': '[\"ZYYS_ZXWK\", \"ZYYS_XXWK\", \"ZYYS_MNWK\"]'}
         ]
-userList = {'15010670639'}
 
-# 账号对应抓取的学科
-# apps = [{'user': '13811378722', 'apps': '[\"ZYYS_MZK\",\"ZYYS_JSK\",\"ZYYS_EWK\","ZYYS_JZK\"]'}
+userList = {'13811378722','13671031359','15010670639','18824329661','15210928290','18531246153','13811317037'}
+
+# 账号对应抓取的学科  all 所有科室 ，每次都会补全填充
+# apps = [{'user': '13811378722', 'apps': '[\"ZYYS_MZK\",\"ZYYS_JSK\",\"ZYYS_EWK\","ZYYS_JZK\","ZYYS_YNWK\",\"ZYYS_ZJNK\"]'}
 #          , {'user': '13671031359', 'apps': '[\"ZYYS_EBYHK\", \"ZYYS_LCBLK\", \"ZYYS_EXJYK\", \"ZYYS_CSYXK\"]'}
 #          , {'user': '15010670639', 'apps': '[\"ZYYS_NK\", \"ZYYS_WK\", \"ZYYS_EK\", \"ZYYS_FCK\"]'}
 #          , {'user': '18824329661', 'apps': '[\"ZYYS_KQHMWK\",\"ZYYS_ZYEBYHK\",\"ZYYS_FSK\",\"ZYYS_ZYT\"]'}
 #          , {'user': '15210928290', 'apps': '[\"ZYYS_PFK\",\"ZYYS_QKYX\",\"ZYYS_SJNK\",\"ZYYS_KFYX\"]'}
 #          , {'user': '18531246153', 'apps': '[\"ZYYS_GK\",\"ZYYS_YK\",\"ZYYS_YXYX\",\"ZYYS_HYXK\", \"ZYYS_FSZLK\",\"ZYYS_YFYXK\",\"ZYYS_KQQK\",\"ZYYS_KQNK\",\"ZYYS_KQXFK\",\"ZYYS_KQZJK\",\"ZYYS_KQBLK\", \"ZYYS_ZYEK\", \"ZYYS_ZYFK\",\"ZYYS_ZYGSK\",\"ZYYS_ZYKFK\",\"ZYYS_ZYNK\",\"ZYYS_ZYQK\",\"ZYYS_ZYWK\",\"ZYYS_ZYYK\",\"ZYYS_TNK\",\"ZYYS_ZJK\"]'}
-#          , {'user': '13811317037', 'apps': '[\"ZYYS_ZXWK\", \"ZYYS_XXWK\", \"ZYYS_MNWK\", \"ZYYS_ZXWK\"]'}
+#          , {'user': '13811317037', 'apps': '[\"ZYYS_ZXWK\", \"ZYYS_XXWK\", \"ZYYS_MNWK\"]'}
 #         ]
-
+#
+# userList = {'13811378722','13671031359','15010670639','18824329661','15210928290','18531246153','13811317037'}
 # , {'user': '18531246153', 'apps': '[\"ZYYS_GK\",\"ZYYS_YK\",\"ZYYS_YXYX\",\"ZYYS_HYXK\"]'}
 # ['ZYYS_NK', 'ZYYS_WK', 'ZYYS_EK', 'ZYYS_FCK']
 # 要抓取的账号
@@ -76,6 +89,7 @@ userList = {'15010670639'}
 
 # 曹惠子账号 13811378722 ，通用版-麻醉科，通用版-精神科，通用版-儿外科，通用版-急诊科
 # appENames = '["ZYYS_MZK","ZYYS_JSK","ZYYS_EWK","ZYYS_JZK"]'
+# appENames = '["ZYYS_MZK"]'
 # appENames = '["ZYYS_MZK"]'
 
 
@@ -110,11 +124,17 @@ class QuestionItem:
         logging.info(self.user.guid)
         response = request(method='get', url=self.appVersion % (self.appENames, self.user.guid), headers=self.user.headers)
         logging.info(response.text)
+
         apps = loads(response.text)['data']
         for app in apps:
+            # 为了应对2018版，程序变更，现在同一个科室可能会有两个科室，一个vip一个非vip，可能2019年还会出现更多的科室
+            if app['isVip'] == 0:
+                continue
+
             logging.error('-----------------' + str(app['AppID']) + ':' + app['AppEName'] + '---------------')
             response = request(method='get', url=self.chapterMenuX % (app['AppEName']), headers=self.user.headers)
             menuInfo = loads(response.text)
+
             # logging.info(menuInfo)
             menuInfo2 = loads(menuInfo['data']['ChapterMenuJson'])
             for menu_level2 in menuInfo2['Childs']:
@@ -139,8 +159,14 @@ class QuestionItem:
                                        "agentCode": self.agentCode,
                                        "clientver": "wide.ksbao.com"}
                         response = post(url=self.url_chapterTestEx, headers=self.user.headers, data=TestEx_data)
+
+
                         # logging.info(response.text)
                         testEx_info = loads(response.text)
+                        # 保存json文件，备查
+                        json = open('/Users/chengfei/ksbd_json/' + '_' + app['AppName'] + '_' + app['AppCName'] + app['AppEName'] + '_' + str(app['AppID']) + '_' + str(testEx_item['ID']) + '.json','w')
+                        json.write(response.text)
+                        json.close()
                         # logging.info(testEx_item)
                         # 获取TestInfo信息，答题人数、答对人数、收藏人数、讨论人数、解析人数、等信息，以字典的方式保存，供后面程序合并保存
                         testInfo = {}

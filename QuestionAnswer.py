@@ -7,7 +7,7 @@ logging.basicConfig(level = logging.INFO)
 
 
 client = MongoClient(host={'localhost'}, port=27017)
-db = client.kaoshibaodian_base
+db = client.kaoshibaodian_base_new
 
 db_questionAnswer = db.QuestionAnswer
 db_questionItem = db.QuestionItem
@@ -15,8 +15,8 @@ db_questionItem = db.QuestionItem
 class QuestionAnswer:
     def __init__(self):
         # self.appENames = ["ZYYS_KQHMWK"]
-        self.appENames = ["ZYYS_KQHMWK","ZYYS_FSK","ZYYS_ZYT","ZYYS_ZYEBYHK","ZYYS_KFYX","ZYYS_PFK","ZYYS_QKYX","ZYYS_SJNK","ZYYS_YK","ZYYS_YXYX","ZYYS_GK","ZYYS_HYXK","ZYYS_EK","ZYYS_FCK","ZYYS_NK","ZYYS_WK","ZYYS_EWK","ZYYS_JSK","ZYYS_JZK","ZYYS_MZK","ZYYS_EBYHK","ZYYS_EXJYK","ZYYS_LCBLK","ZYYS_CSYXK","ZYYS_MNWK","ZYYS_XXWK","ZYYS_ZXWK","ZYYS_FSZLK","ZYYS_KQBLK","ZYYS_KQNK","ZYYS_KQQK","ZYYS_KQXFK","ZYYS_KQZJK","ZYYS_TNK","ZYYS_YFYXK","ZYYS_ZJK","ZYYS_ZYEK","ZYYS_ZYFK","ZYYS_ZYGSK","ZYYS_ZYKFK","ZYYS_ZYNK","ZYYS_ZYQK","ZYYS_ZYWK","ZYYS_ZYYK","ZYYS_JSNKYJD"]
-
+        #self.appENames = ["ZYYS_KQHMWK","ZYYS_FSK","ZYYS_ZYT","ZYYS_ZYEBYHK","ZYYS_KFYX","ZYYS_PFK","ZYYS_QKYX","ZYYS_SJNK","ZYYS_YK","ZYYS_YXYX","ZYYS_GK","ZYYS_HYXK","ZYYS_EK","ZYYS_FCK","ZYYS_NK","ZYYS_WK","ZYYS_EWK","ZYYS_JSK","ZYYS_JZK","ZYYS_MZK","ZYYS_EBYHK","ZYYS_EXJYK","ZYYS_LCBLK","ZYYS_CSYXK","ZYYS_MNWK","ZYYS_XXWK","ZYYS_ZXWK","ZYYS_FSZLK","ZYYS_KQBLK","ZYYS_KQNK","ZYYS_KQQK","ZYYS_KQXFK","ZYYS_KQZJK","ZYYS_TNK","ZYYS_YFYXK","ZYYS_ZJK","ZYYS_ZYEK","ZYYS_ZYFK","ZYYS_ZYGSK","ZYYS_ZYKFK","ZYYS_ZYNK","ZYYS_ZYQK","ZYYS_ZYWK","ZYYS_ZYYK","ZYYS_JSNKYJD"]
+        self.appENames = ["ZYYS_YNWK","ZYYS_ZJNK"]
     def get_question_answer(self):
         logging.info(self.appENames)
         for question_item in db_questionItem.find({'appEName':{'$in': self.appENames}}):
@@ -65,10 +65,14 @@ class QuestionAnswer:
 
                         question_answer['ItemName'] = answer_item['ItemName']
                         question_answer['Content'] = answer_item['Content']
-                        if answer_item['ItemName'] == question_item['Answer']:
-                            IsRight = 1
-                        else:
-                            IsRight = 0
+                        i = 0
+                        while i < len(question_item['Answer']):
+                            if answer_item['ItemName'] == question_item['Answer'][i]:
+                                IsRight = 1
+                                break
+                            else:
+                                IsRight = 0
+                            i += 1
                         question_answer['IsRight'] = IsRight
                         db_questionAnswer.insert(question_answer.copy())
 
