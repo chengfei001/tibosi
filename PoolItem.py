@@ -9,16 +9,18 @@ from login import userLogin
 logging.basicConfig(level=logging.DEBUG)
 
 client = MongoClient('localhost',27017)
-db = client.kaoshibaodian_base
+db = client.kaoshibaodian_base_new
 
 db_PoolItem = db.PoolItem
 db_PoolItemTags = db.PoolItemTags
 
-
+# 关键字，标签
 class PoolItem:
     def __init__(self):
         self.url_pooItem = 'http://gfapi.ksbao.com/api/softMenu/getNew?agentCode=889&clientver=wide.ksbao.com'
-        self.user  =userLogin()
+        self.user = userLogin('13811378722')
+        self.user.run()
+        # self.user  =userLogin()
         self.user.run()
 
     def getPoolItem(self):
@@ -45,10 +47,10 @@ class PoolItem:
                                 if items_province_sub['tags'].split('#'):
                                     for tag in items_province_sub['tags'].split('#'):
                                         d_tag = {'TagName': tag,'app_id':items_province_sub['AppID']}
-                            #             #暂时注释插入数据库动作
-                            #             db_PoolItemTags.insert(d_tag)
-                            # # 单条数据插入，暂时注销，避免插入错误
-                            # db_PoolItem.insert(items_province_sub)
+                                        #暂时注释插入数据库动作
+                                        db_PoolItemTags.insert(d_tag)
+                            # 单条数据插入，暂时注销，避免插入错误
+                            db_PoolItem.insert(items_province_sub)
 
     ''' 批量插入，目前数量979，批量插入操作失败                            
                                 array_poolItems.append(items_province_sub)

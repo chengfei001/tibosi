@@ -33,16 +33,24 @@ db_questionItem = db.QuestionItem
 #          , {'user': '13811317037', 'apps': '[]'}
 #         ]
 # userList = {'13811378722'}
+# ZYYS_ZJZYEK,ZYYS_ZJZYFK
 
-
-apps = [{'user': '13811378722', 'apps': '[\"ZYYS_MZK\",\"ZYYS_JSK\",\"ZYYS_EWK\","ZYYS_JZK\","ZYYS_YNWK\",\"ZYYS_ZJNK\"]'}
-         , {'user': '13671031359', 'apps': '[\"ZYYS_EBYHK\", \"ZYYS_LCBLK\", \"ZYYS_EXJYK\", \"ZYYS_CSYXK\"]'}
-         , {'user': '15010670639', 'apps': '[\"ZYYS_NK\", \"ZYYS_WK\", \"ZYYS_EK\", \"ZYYS_FCK\"]'}
-         , {'user': '18824329661', 'apps': '[\"ZYYS_KQHMWK\",\"ZYYS_ZYEBYHK\",\"ZYYS_FSK\",\"ZYYS_ZYT\"]'}
-         , {'user': '15210928290', 'apps': '[\"ZYYS_PFK\",\"ZYYS_QKYX\",\"ZYYS_SJNK\",\"ZYYS_KFYX\"]'}
-         , {'user': '18531246153', 'apps': '[\"ZYYS_GK\",\"ZYYS_YK\",\"ZYYS_YXYX\",\"ZYYS_HYXK\", \"ZYYS_FSZLK\",\"ZYYS_YFYXK\",\"ZYYS_KQQK\",\"ZYYS_KQNK\",\"ZYYS_KQXFK\",\"ZYYS_KQZJK\",\"ZYYS_KQBLK\", \"ZYYS_ZYEK\", \"ZYYS_ZYFK\",\"ZYYS_ZYGSK\",\"ZYYS_ZYKFK\",\"ZYYS_ZYNK\",\"ZYYS_ZYQK\",\"ZYYS_ZYWK\",\"ZYYS_ZYYK\",\"ZYYS_TNK\",\"ZYYS_ZJK\"]'}
-         , {'user': '13811317037', 'apps': '[\"ZYYS_ZXWK\", \"ZYYS_XXWK\", \"ZYYS_MNWK\"]'}
+apps = [{'user': '13811378722', 'apps': '[\"ZYYS_ZJZYYK\",\"ZYYS_ZJZYGSK\",\"ZYYS_EWK\"]'}
+         , {'user': '18701058201', 'apps': '[\"ZYYS_ZJFCK\", \"ZYYS_ZJZYEBYHK\"\]'}
+         , {'user': '15010670639', 'apps': '[\"ZYYS_ZJZYQK\", \"ZYYS_ZJZYWK\"]'}
+         , {'user': '15810685582', 'apps': '[\"ZYYS_ZJZYEK\", \"ZYYS_ZJZYFK\"]'}
         ]
+userList = {'13811378722','18701058201','15010670639','15810685582'}
+
+# apps = [{'user': '13811378722', 'apps': '[\"ZYYS_MZK\",\"ZYYS_JSK\",\"ZYYS_EWK\","ZYYS_JZK\","ZYYS_YNWK\",\"ZYYS_ZJNK\"]'}
+#          , {'user': '13671031359', 'apps': '[\"ZYYS_EBYHK\", \"ZYYS_LCBLK\", \"ZYYS_EXJYK\", \"ZYYS_CSYXK\"]'}
+#          , {'user': '15010670639', 'apps': '[\"ZYYS_NK\", \"ZYYS_WK\", \"ZYYS_EK\", \"ZYYS_FCK\"]'}
+#          , {'user': '18824329661', 'apps': '[\"ZYYS_KQHMWK\",\"ZYYS_ZYEBYHK\",\"ZYYS_FSK\",\"ZYYS_ZYT\"]'}
+#          , {'user': '15210928290', 'apps': '[\"ZYYS_PFK\",\"ZYYS_QKYX\",\"ZYYS_SJNK\",\"ZYYS_KFYX\"]'}
+#          , {'user': '18531246153', 'apps': '[\"ZYYS_GK\",\"ZYYS_YK\",\"ZYYS_YXYX\",\"ZYYS_HYXK\", \"ZYYS_FSZLK\",\"ZYYS_YFYXK\",\"ZYYS_KQQK\",\"ZYYS_KQNK\",\"ZYYS_KQXFK\",\"ZYYS_KQZJK\",\"ZYYS_KQBLK\", \"ZYYS_ZYEK\", \"ZYYS_ZYFK\",\"ZYYS_ZYGSK\",\"ZYYS_ZYKFK\",\"ZYYS_ZYNK\",\"ZYYS_ZYQK\",\"ZYYS_ZYWK\",\"ZYYS_ZYYK\",\"ZYYS_TNK\",\"ZYYS_ZJK\"]'}
+#          , {'user': '13811317037', 'apps': '[\"ZYYS_ZXWK\", \"ZYYS_XXWK\", \"ZYYS_MNWK\"]'}
+#          , {'user': '15810685582', 'apps': '[\"ZYYS_ZJZYEK\", \"ZYYS_ZJZYFK\"]'}
+#         ]
 
 userList = {'13811378722','13671031359','15010670639','18824329661','15210928290','18531246153','13811317037'}
 
