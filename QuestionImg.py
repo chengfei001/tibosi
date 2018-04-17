@@ -26,7 +26,8 @@ class QuestionImg:
                                                        {'SelectedItems.Content': re.compile(self.pic_type)},
                                                        {'Title': re.compile(self.pic_type2)},
                                                        {'FrontTitle': re.compile(self.pic_type2)},
-                                                       {'SelectedItems.Content': re.compile(self.pic_type2)}]
+                                                       {'SelectedItems.Content': re.compile(self.pic_type2)}],
+                                               'appEName': {'$in': ["ZYYS_ZJFCK","ZYYS_ZJZYEBYHK","ZYYS_ZJZYEK","ZYYS_ZJZYFK"]}
                                                },
                                               no_cursor_timeout=True)
         # questin_items = db_question_item.find({'$or':[{'Title':re.compile(self.pic_type)},
@@ -50,9 +51,10 @@ class QuestionImg:
                 imgs = re.findall('\[(.*?)\]', question['FrontTitle'])
                 self.get_img(imgs=imgs, pic_path=pic_path, app_ename=app_ename)
             # 检查SelectedItems.title字段是否存在，存在的话获取SelectedItems.title中的图片，返回数组
-            for selected in question['SelectedItems']:
-                imgs = re.findall('\[(.*?)\]', selected['Content'])
-                self.get_img(imgs=imgs, pic_path=pic_path, app_ename=app_ename)
+            if question.get('SelectedItems'):
+                for selected in question['SelectedItems']:
+                    imgs = re.findall('\[(.*?)\]', selected['Content'])
+                    self.get_img(imgs=imgs, pic_path=pic_path, app_ename=app_ename)
         questin_items.close()
 
     def get_img(self,imgs,pic_path,app_ename):

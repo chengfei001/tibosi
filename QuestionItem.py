@@ -35,12 +35,18 @@ db_questionItem = db.QuestionItem
 # userList = {'13811378722'}
 # ZYYS_ZJZYEK,ZYYS_ZJZYFK
 
-apps = [{'user': '13811378722', 'apps': '[\"ZYYS_ZJZYYK\",\"ZYYS_ZJZYGSK\",\"ZYYS_EWK\"]'}
-         , {'user': '18701058201', 'apps': '[\"ZYYS_ZJFCK\", \"ZYYS_ZJZYEBYHK\"\]'}
-         , {'user': '15010670639', 'apps': '[\"ZYYS_ZJZYQK\", \"ZYYS_ZJZYWK\"]'}
-         , {'user': '15810685582', 'apps': '[\"ZYYS_ZJZYEK\", \"ZYYS_ZJZYFK\"]'}
+# apps = [{'user': '13811378722', 'apps': '[\"ZYYS_ZJZYYK\",\"ZYYS_ZJZYGSK\",\"ZYYS_EWK\"]'}
+#          , {'user': '18701058201', 'apps': '[\"ZYYS_ZJFCK\", \"ZYYS_ZJZYEBYHK\"\]'}
+#          , {'user': '15010670639', 'apps': '[\"ZYYS_ZJZYQK\", \"ZYYS_ZJZYWK\"]'}
+#          , {'user': '15810685582', 'apps': '[\"ZYYS_ZJZYEK\", \"ZYYS_ZJZYFK\"]'}
+#         ]
+# userList = {'13811378722','18701058201','15010670639','15810685582'}
+
+#补忘抓的4个科室
+apps = [{'user': '18701058201', 'apps': '[\"ZYYS_ZJFCK\", \"ZYYS_ZJZYEBYHK\"\]'}
+        , {'user': '15810685582', 'apps': '[\"ZYYS_ZJZYEK\", \"ZYYS_ZJZYFK\"]'}
         ]
-userList = {'13811378722','18701058201','15010670639','15810685582'}
+userList = {'18701058201','15810685582'}
 
 # apps = [{'user': '13811378722', 'apps': '[\"ZYYS_MZK\",\"ZYYS_JSK\",\"ZYYS_EWK\","ZYYS_JZK\","ZYYS_YNWK\",\"ZYYS_ZJNK\"]'}
 #          , {'user': '13671031359', 'apps': '[\"ZYYS_EBYHK\", \"ZYYS_LCBLK\", \"ZYYS_EXJYK\", \"ZYYS_CSYXK\"]'}
@@ -52,7 +58,7 @@ userList = {'13811378722','18701058201','15010670639','15810685582'}
 #          , {'user': '15810685582', 'apps': '[\"ZYYS_ZJZYEK\", \"ZYYS_ZJZYFK\"]'}
 #         ]
 
-userList = {'13811378722','13671031359','15010670639','18824329661','15210928290','18531246153','13811317037'}
+# userList = {'13811378722','13671031359','15010670639','18824329661','15210928290','18531246153','13811317037'}
 
 # 账号对应抓取的学科  all 所有科室 ，每次都会补全填充
 # apps = [{'user': '13811378722', 'apps': '[\"ZYYS_MZK\",\"ZYYS_JSK\",\"ZYYS_EWK\","ZYYS_JZK\","ZYYS_YNWK\",\"ZYYS_ZJNK\"]'}

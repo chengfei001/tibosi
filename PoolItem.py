@@ -50,7 +50,7 @@ class PoolItem:
                                         #暂时注释插入数据库动作
                                         db_PoolItemTags.insert(d_tag)
                             # 单条数据插入，暂时注销，避免插入错误
-                            db_PoolItem.insert(items_province_sub)
+                            # db_PoolItem.insert(items_province_sub)
 
     ''' 批量插入，目前数量979，批量插入操作失败                            
                                 array_poolItems.append(items_province_sub)
