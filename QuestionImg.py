@@ -27,7 +27,7 @@ class QuestionImg:
                                                        {'Title': re.compile(self.pic_type2)},
                                                        {'FrontTitle': re.compile(self.pic_type2)},
                                                        {'SelectedItems.Content': re.compile(self.pic_type2)}],
-                                               'appEName': {'$in': ["ZYYS_ZJFCK","ZYYS_ZJZYEBYHK","ZYYS_ZJZYEK","ZYYS_ZJZYFK"]}
+                                               'appEName': {'$in': ["ZYYS_ZJZYEBYHK","ZYYS_ZJZYKFK"]}
                                                },
                                               no_cursor_timeout=True)
         # questin_items = db_question_item.find({'$or':[{'Title':re.compile(self.pic_type)},

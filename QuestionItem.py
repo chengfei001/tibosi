@@ -9,6 +9,8 @@ import time
 from login import userLogin
 import CryptoDesUtil
 
+
+#主抓去进程
 logging.basicConfig(level=logging.INFO, filemode='ChapterTestEx.log', format='%(asctime)s - %(levelname)s - %(message)s')
 
 # mongoDB
@@ -36,17 +38,19 @@ db_questionItem = db.QuestionItem
 # ZYYS_ZJZYEK,ZYYS_ZJZYFK
 
 # apps = [{'user': '13811378722', 'apps': '[\"ZYYS_ZJZYYK\",\"ZYYS_ZJZYGSK\",\"ZYYS_EWK\"]'}
-#          , {'user': '18701058201', 'apps': '[\"ZYYS_ZJFCK\", \"ZYYS_ZJZYEBYHK\"\]'}
+#          , {'user': '18701058201', 'apps': '[\"ZYYS_ZJZYKFK\", \"ZYYS_ZJZYEBYHK\"\]'}
 #          , {'user': '15010670639', 'apps': '[\"ZYYS_ZJZYQK\", \"ZYYS_ZJZYWK\"]'}
 #          , {'user': '15810685582', 'apps': '[\"ZYYS_ZJZYEK\", \"ZYYS_ZJZYFK\"]'}
 #         ]
 # userList = {'13811378722','18701058201','15010670639','15810685582'}
 
 #补忘抓的4个科室
-apps = [{'user': '18701058201', 'apps': '[\"ZYYS_ZJFCK\", \"ZYYS_ZJZYEBYHK\"\]'}
-        , {'user': '15810685582', 'apps': '[\"ZYYS_ZJZYEK\", \"ZYYS_ZJZYFK\"]'}
+# apps = [{'user': '18701058201', 'apps': '[\"ZYYS_ZJZYEBYHK\"]'}
+#         ]
+apps = [{'user': '18701058201', 'apps': '[\"ZYYS_ZJZYKFK\"]'}
         ]
-userList = {'18701058201','15810685582'}
+
+userList = {'18701058201'}
 
 # apps = [{'user': '13811378722', 'apps': '[\"ZYYS_MZK\",\"ZYYS_JSK\",\"ZYYS_EWK\","ZYYS_JZK\","ZYYS_YNWK\",\"ZYYS_ZJNK\"]'}
 #          , {'user': '13671031359', 'apps': '[\"ZYYS_EBYHK\", \"ZYYS_LCBLK\", \"ZYYS_EXJYK\", \"ZYYS_CSYXK\"]'}
@@ -108,12 +112,12 @@ userList = {'18701058201','15810685582'}
 
 
 # # 要抓取的科室 何燕账号 1506
-# # appENames = {'ZYYS_WK'}#{'ZYYS_NK', 'ZYYS_EK', 'ZYYS_FCK'}
+# # appENames = {'ZYYS_WK'}#{'ZYYS_NK', 'ZYYS_EK', 'ZYYS_FCK'}m
 # appENames = '["ZYYS_NK", "ZYYS_WK", "ZYYS_EK", "ZYYS_FCK"]'
 # appENames = '["ZYYS_WK"]'
 
 
-
+# 主抓去进程
 class QuestionItem:
     def __init__(self):
         # 确认课程抓取时AppID需要从数据库中获取
