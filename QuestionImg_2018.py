@@ -14,7 +14,6 @@ db = client.kaoshibaodian_base_new_2018
 db_question_item = db.QuestionItem
 
 
-
 class QuestionImg:
     def __init__(self):
         self.file_path = '/Users/chengfei/YSDQKH_GGWSYS/'
